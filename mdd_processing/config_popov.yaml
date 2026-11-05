@@ -1,0 +1,23 @@
+# turn off tracking changes: git update-index --skip-worktree path/to/your/file.txt
+# turn on: git update-index --no-skip-worktree path/to/your/file.txt
+#mdd_dir:
+#dir_merge_mdd:
+mdd:
+src: /home/mila/work/popov_all/15102026/foot/файл 02_foot.txt
+delimiter: " "
+output: null
+systeminfo_filepath: /home/mila/work/popov_all/15102026/Вариации ПКМ.txt
+datetime: null  # format "YYYYMMDD_HHMMSS.S"
+gnss: /home/mila/work/popov_all/15102026/20261015.csv
+write_log: true
+track_max_angle: 15
+track_min_len: 5
+fc_max_deviation: 60
+geom_offset: 2.6
+s1_offset: 0.4
+s2_offset: 0.1
+alt: 0.4
+use_facing: True
+filter_type: const_med   # const_med, rolling_med
+filt_window: 0 # in meters
+cutoff_freq: 0 #Hz, LP smoothing filter, if 0 LP is not applied

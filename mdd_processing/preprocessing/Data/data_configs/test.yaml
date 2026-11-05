@@ -1,0 +1,12 @@
+extends: "final.yaml"
+delimiter: "m"
+columns:
+  timestamp_col:
+    name: "milochka"
+  lat_col:
+    save: false
+  lon_col:
+    save: false
+  alt_col:
+    use: false
+    save: false

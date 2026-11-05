@@ -1,0 +1,42 @@
+delimiter: "\t"
+columns:
+  timestamp_col:
+    name: "Timestamp [ms]"
+    type: "day timestamp"
+    unit: "ms"
+    required: true
+    use: true
+    save: true
+  utc_timestamp_col:
+    name: "UTC Timestamp [ms]"
+    type: "utc timestamp"
+    unit: "ms"
+    required: false
+    use: true
+    save: true
+  lat_col:
+    name: "Latitude [°]"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  lon_col:
+    name: "Longitude [°]"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  track_id_col:
+    name: "Track ID"
+    type: "int"
+    required: true
+    use: true
+    save: true
+  sensor_id_col:
+    name: "Sensor ID"
+    type: "int"
+    required: true
+    use: true
+    save: true

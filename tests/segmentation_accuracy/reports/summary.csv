@@ -1,0 +1,9 @@
+Algorithm,Metric,Final
+magdrone,MCC,"0,963619"
+own,MCC,"0,981065"
+magdrone,track_f1-score,"0,987702"
+own,track_f1-score,"0,994377"
+magdrone,track_precision,"0,997095"
+own,track_precision,"0,993168"
+magdrone,track_recall,"0,978591"
+own,track_recall,"0,995605"

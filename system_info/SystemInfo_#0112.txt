@@ -1,0 +1,42 @@
+System-Info:
+#######################
+
+System-Name: MagDroneR3 #0112
+System-Rev.: 03.04
+
+Mainboard .: MDDLM #0427
+.Hardware .: 01_01/00
+.Firmware .: 03.02-01/00
+
+MDExt .....: #0427
+.Hardware .: 01_02/00
+
+ADC-System : MBS #0520
+.Hardware .: 02_05/01
+.Firmware .: 02.00-02/00
+.SampleRate: 200Hz
+.ACC-Sensor: LIS3DSH
+
+GPS-System : u-blox SAM M8Q
+GPS-Rate ..: 200ms
+
+MagSensor 1: FGM3D/75 #2826
+.Fullscale : 75000nT / 10V
+.KorrMatrix:
+   +0.999696 / +0.000620 / -0.000709
+   +0.000000 / +1.000503 / +0.000204
+   +0.000000 / +0.000000 / +1.000437
+.OffsetKorr:
+   -15.432 / +9.484 / -14.934
+
+MagSensor 2: FGM3D/75 #2827
+.Fullscale : 75000nT / 10V
+.KorrMatrix:
+   +1.000542 / +0.000126 / +0.000102
+   +0.000000 / +0.999884 / +0.000152
+   +0.000000 / +0.000000 / +0.999977
+.OffsetKorr:
+   -21.026 / +1.783 / -39.267
+
+
+Datum/Zeit : 03.06.2025 / 19:32:21 (UTC)

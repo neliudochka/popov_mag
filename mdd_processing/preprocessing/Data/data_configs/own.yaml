@@ -1,0 +1,36 @@
+extends: "default.yaml"
+columns:
+  lat_col:
+    name: " Latitude [Decimal Degrees]"
+  lon_col:
+    name: " Longitude [Decimal Degrees]"
+  alt_col:
+    name: " Altitude [m]"
+  acc_cols:
+    name: [" AccX [g]", " AccY [g]", " AccZ [g]"]
+  mag_cols1:
+    name: [" B1x [nT]", " B1y [nT]", " B1z [nT]"]
+  mag_cols2:
+    name: [" B2x [nT]", " B2y [nT]", " B2z [nT]"]
+    required: true
+  gps_date_col:
+    name: " GPSDate"
+    required: true
+  gps_time_col:
+    name: " GPSTime"
+    required: true
+  gps_time_col_hh_mm_ss_sss:
+    name: " GPSTime [hh:mm:ss.sss]"
+    required: true
+  heading_track_col:
+    name: "Heading of track"
+    type: "float"
+    required: false
+    use: true
+    save: true
+  yaw_track_col:
+    name: "Yaw of track"
+    type: "float"
+    required: false
+    use: true
+    save: true

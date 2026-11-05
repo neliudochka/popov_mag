@@ -1,0 +1,35 @@
+delimiter: ","
+columns:
+  utc_timestamp_col:
+    name: "Timestamp [ms]"
+    type: "timestamp"
+    unit: "ms"
+    required: true
+    use: true
+    save: true
+  lat_col:
+    name: "B"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  lon_col:
+    name: "L"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  gps_time_col:
+    name: "StartTime"
+    type: "gps"
+    required: true
+    use: true
+    save: true
+  nmea_col:
+    name: "NMEA string"
+    type: "NMEA"
+    required: true
+    use: true
+    save: true

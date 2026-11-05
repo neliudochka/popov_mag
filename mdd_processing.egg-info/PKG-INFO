@@ -1,0 +1,88 @@
+Metadata-Version: 2.4
+Name: mdd_processing
+Version: 0.1.0
+Summary: MDD processing pipeline
+Author-email: Liudmyla Gorbunova <gorbunova.milasha@gmail.com>
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: AHRS>=0.3
+Requires-Dist: geographiclib<3.0,>=2.0
+Requires-Dist: geopy<3.0,>=2.4
+Requires-Dist: numpy<3.0,>=2.2
+Requires-Dist: pandas<3.0,>=2.2.3
+Requires-Dist: PyYAML<7.0,>=6.0
+Requires-Dist: scipy<2.0,>=1.15.0
+Requires-Dist: typing_extensions>=4.5
+Provides-Extra: dev
+Requires-Dist: nuitka>=2.0; extra == "dev"
+
+# MDD - processing
+
+## Installation
+
+To install package run:
+```
+pip install git+ssh://git@github.com/Postup-Solutions/mdd-processing.git
+```
+
+If you need files for magnetometer calibration (Systeminfo files), you can run:
+```
+ mkdir sys_in
+ cd sys_in/
+ git init
+ git remote add -f origin git@github.com:Postup-Solutions/mdd-processing.git
+ git config core.sparseCheckout true
+ echo "system_info" > .git/info/sparse-checkout
+ git pull origin main
+ mv  system_info/* .
+ rm -r system_info/
+ rm -r .git
+```
+
+Example of usage:
+```
+from mdd_processing import run_preprocessing as rp
+
+# pass True if you want to log to the log file and terminal
+# and False if you want to log just to terminal
+rp.setup_logger(False)
+
+fpc = rp.FileProcessConfig(
+    mdd_filepath=".../20250325_121959_MD-R3_#0055.mdd",
+    systeminfo_filepath="sys_in/SystemInfo_#0055.txt",
+    delimiter=";",
+    result_filepath="res.asc"
+)
+
+rp.process_single_file(fpc)
+```
+If you are using `mdd_filepath`, than code is going to produce an additional `mdd_filepath_RF.csv` file, that represents decoded mdd file.  
+This file can be passed to the `process_single_file` function with `src_filepath` parameter.
+
+## Obfuscation
+
+Build with Nuitka for a complied, obfuscated package
+
+```
+pip install -e ".[dev]"
+python scripts/build_nuitka.py
+```
+
+Output in 'dist/' 
+
+
+## Tests summary
+
+### Segmentation evaluation
+
+| Algorithm   | Metric          | Final    |
+|:------------|:----------------|:---------|
+| magdrone    | MCC             | 0,963619 |
+| own         | MCC             | 0,981065 |
+| magdrone    | track_f1-score  | 0,987702 |
+| own         | track_f1-score  | 0,994377 |
+| magdrone    | track_precision | 0,997095 |
+| own         | track_precision | 0,993168 |
+| magdrone    | track_recall    | 0,978591 |
+| own         | track_recall    | 0,995605 |
+

@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'tests/segmentation_accuracy/reports/**'
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'tests/segmentation_accuracy/reports/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.POSTUP_MDD_PROCESSING_PAT }}
+        ref: ${{ github.head_ref }}
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -e .
+
+    - name: Run tests
+      run: |
+        pytest
+
+    - name: Evaluate segmentation algorithm
+      run: |
+        python tests/segmentation_accuracy/prepare_own.py
+        python tests/segmentation_accuracy/evaluate.py
+        python tests/segmentation_accuracy/update_readme.py
+
+    - name: Add and commit segmentation evaluation results
+      uses: EndBug/add-and-commit@v9
+      with:
+        add: "['tests/segmentation_accuracy/*', 'README.md']"
+        new_branch: ${{ github.head_ref }}
+        message: Update segmentation evaluation results
+        author_name: github_actions
+        author_email: github_actions@github.com

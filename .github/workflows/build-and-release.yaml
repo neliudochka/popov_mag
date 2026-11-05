@@ -1,0 +1,157 @@
+# Build and release mdd_processing. Triggered by GitHub release.
+# Flow: Create release with tag 0.1.1 -> workflow runs -> version from tag, wheel built, uploaded to S3 + GitHub release, pyproject pushed.
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_override:
+        description: "Version (required for manual run; e.g. 0.1.1)"
+        required: true
+        type: string
+  release:
+    types: [published]
+
+# IAM needs: s3:PutObject on mdd-processing-build-bucket/releases/*
+env:
+  BUCKET: mdd-processing-build-bucket
+  PREFIX: releases
+  AWS_REGION: eu-central-1
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    permissions:
+      contents: write  # upload to GitHub release, push pyproject
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.ref }}
+
+      - name: Set version from tag
+        id: version
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+          else
+            VERSION="${{ inputs.version_override }}"
+          fi
+          VERSION="${VERSION#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using version: $VERSION"
+
+      - name: Update pyproject.toml with version
+        run: python scripts/update_version.py ${{ steps.version.outputs.version }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Build package with Nuitka
+        run: python scripts/build_nuitka.py
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload wheel to S3
+        shell: bash
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          WHL=$(ls dist/mdd_processing-*.whl 2>/dev/null | head -1)
+          if [ -z "$WHL" ]; then
+            echo "No wheel found in dist/"
+            exit 1
+          fi
+          WHL_NAME=$(basename "$WHL")
+          S3_KEY="${PREFIX}/mdd_processing-${VERSION}/${WHL_NAME}"
+          aws s3 cp "$WHL" "s3://${BUCKET}/${S3_KEY}" --metadata "version=${VERSION},commit=${{ github.sha }}"
+          echo "Uploaded to s3://${BUCKET}/${S3_KEY}"
+
+      - name: Upload wheel to GitHub release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: dist/mdd_processing-*.whl
+          fail_on_unmatched_files: true
+
+  push-version:
+    needs: build-and-release
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Bump version in pyproject.toml
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          VERSION="${VERSION#v}"
+          python3 scripts/update_version.py "$VERSION"
+          grep version pyproject.toml
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pyproject.toml
+          if git diff --staged --quiet; then
+            echo "No version changes to commit"
+          else
+            git commit -m "Bump version to ${{ github.event.release.tag_name }} [skip ci]"
+            git push
+          fi
+
+  update-data-analysis-tool:
+    needs: build-and-release
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout data analysis tool repo
+        uses: actions/checkout@v4
+        with:
+          repository: Postup-Solutions/postup-data-analysis-tool
+          token: ${{ secrets.PAT_TOKEN }}
+          ref: main
+
+      - name: Update mdd_processing version in requirements.txt
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          VERSION="${VERSION#v}"
+          sed -i "s/mdd_processing==[0-9.]*/mdd_processing==${VERSION}/" requirements.txt
+          echo "Updated requirements.txt:"
+          cat requirements.txt
+
+      - name: Create PR
+        run: |
+          VERSION="${{ github.event.release.tag_name }}"
+          VERSION="${VERSION#v}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-mdd-processing-${VERSION}
+          git add requirements.txt
+          git commit -m "Update mdd_processing to ${VERSION}"
+          git push origin update-mdd-processing-${VERSION}
+          gh pr create --title "Update mdd_processing to ${VERSION}" --body "Automated PR to update mdd_processing to version ${VERSION}" --base main
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}

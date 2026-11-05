@@ -1,0 +1,26 @@
+extends: "default.yaml"
+delimiter: "\t"
+columns:
+  mag_cols1:
+    name: ["Mag-X [nT]", "Mag-Y [nT]", "Mag-Z [nT]"]
+  mag_cols2:
+    use: false
+  heading_col:
+    use: true
+    save: true
+  yaw_col:
+    use: false
+  facing_col:
+    use: false
+  track_facing_col:
+    use: true
+    save: true
+  gps_time_col:
+    use: false
+  step_distance_col:
+    name: "Step [m]"
+    type: "distance"
+    unit: "m"
+    required: false
+    use: true
+    save: true

@@ -1,0 +1,36 @@
+mdd_processing/logs/
+mdd_processing/visual
+mdd_processing/images
+mdd_processing/files_for_test
+mdd_processing/config.yaml
+tests/segmentation_accuracy/Test_Data/mdd/*
+
+# cash
+*.pyc
+*.pyo
+
+# pycharm
+.idea/
+
+# sideprojects and other
+files/
+mddConverter_MagDrone_Comparison/
+ppkRtkComparison/
+tests/test_attitude_determination.py
+tests/test_compareRtkPpk.py
+
+# build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+.nuitka/
+
+# virtual environment
+.venv/
+.python-version
+.env
+venv/
+env/
+
+

@@ -1,0 +1,168 @@
+delimiter: ";"
+columns:
+  timestamp_col:
+    name: "Timestamp [ms]"
+    type: "mission timestamp" # utc timestamp / day timestamp
+    unit: "ms"
+    required: true
+    use: true
+    save: true
+  utc_timestamp_col:
+    name: "UTC Timestamp [ms]"
+    type: "utc timestamp"
+    unit: "ms"
+    required: false
+    use: true
+    save: true
+  lat_col:
+    name: "Latitude [°]"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  lon_col:
+    name: "Longitude [°]"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  alt_col:
+    name: "Altitude [m]"
+    type: "gps"
+    unit: "m"
+    required: true
+    use: true
+    save: true
+  track_id_col:
+    name: "Track ID"
+    type: "metadata"
+    required: false
+    use: true
+    save: true
+  sensor_id_col:
+    name: "Sensor ID"
+    type: "metadata"
+    required: false
+    use: true
+    save: true
+  line_id_col:
+    name: "Line ID"
+    type: "metadata"
+    required: false
+    use: true
+    save: true
+  mag_cols1:
+    name: ["B1x [nT]", "B1y [nT]", "B1z [nT]"]
+#    group: "mag"
+    type: "vector"
+    unit: "nT"
+    required: true
+    use: true
+    save: true
+  mag_cols2:
+    name: ["B2x [nT]", "B2y [nT]", "B2z [nT]"]
+#    group: "mag"
+    type: "vector"
+    unit: "nT"
+    required: false
+    use: true
+    save: false
+  acc_cols:
+    name: ["AccX [g]", "AccY [g]", "AccZ [g]"]
+    type: "vector"
+#    group: "acc"
+    unit: "g"
+    required: true
+    use: true
+    save: true
+  heading_col:
+    name: "Heading [Deg]"
+    type: "orientation"
+    unit: "degrees"
+    required: false
+    use: true
+    save: false
+  yaw_s1_col:
+    name: "Yaw1 [deg]"
+    type: "orientation"
+    unit: "degrees"
+    required: false
+    use: true
+    save: false
+  yaw_s2_col:
+    name: "Yaw2 [deg]"
+    type: "orientation"
+    unit: "degrees"
+    required: false
+    use: true
+    save: false
+  facing_col:
+    name: "Facing"
+    type: "metadata"
+    required: false
+    use: true
+    save: false
+  track_facing_col:
+    name: "Track facing"
+    type: "metadata"
+    required: false
+    use: true
+    save: false
+  total_field_col:
+    name: "Total field [nT]"
+    type: "mag"
+    unit: "nT"
+    required: false
+    use: true
+    save: true
+  total_field_anomaly_col:
+    name: "Total field anomaly [nT]"
+    type: "mag"
+    required: false
+    use: true
+    save: false
+  residual_field_col:
+    name: "Total field anomaly [nT]"
+    type: "mag"
+    required: false
+    use: true
+    save: true
+  gps_date_col:
+    name: " GPSDate"
+    type: "gps"
+    required: false
+    use: false
+    save: false
+  gps_time_col:
+    name: " GPSTime"
+    type: "gps"
+    required: false
+    use: true
+    save: false
+  gps_time_col_hh_mm_ss_sss:
+    name: " GPSTime [hh:mm:ss.sss]"
+    type: "gps"
+    required: false
+    use: false
+    save: false
+  quality:
+    name: " Quality"
+    type: ""
+    required: false
+    use: false
+    save: false
+  satellites:
+    name: " Satellites"
+    type: ""
+    required: false
+    use: false
+    save: false
+  step_distance_col:
+    name: "Step [m]"
+    type: "distance"
+    unit: "m"
+    required: false
+    use: true
+    save: true

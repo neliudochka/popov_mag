@@ -1,0 +1,36 @@
+delimiter: ";"
+columns:
+  timestamp_col:
+    name: "Timestamp [ms]"
+    type: "mission timestamp"
+    unit: "ms"
+    required: true
+    use: true
+    save: true
+  utc_timestamp_col:
+    name: "UTC Timestamp [ms]"
+    type: "timestamp"
+    unit: "ms"
+    required: false
+    use: true
+    save: true
+  lat_col:
+    name: " Latitude [Decimal Degrees]"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  lon_col:
+    name: " Longitude [Decimal Degrees]"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  gps_time_col:
+    name: " GPSTime"
+    type: "gps"
+    required: true
+    use: true
+    save: false

@@ -1,0 +1,37 @@
+delimiter: ";"
+columns:
+  timestamp_col:
+    name: "Timestamp [ms]"
+    type: "timestamp"
+    unit: "ms"
+    required: true
+    use: true
+    save: true
+  utc_timestamp_col:
+    name: "UTC Timestamp [ms]"
+    type: "timestamp"
+    unit: "ms"
+    required: false
+    use: true
+    save: true
+  lat_col:
+    name: "lat"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  lon_col:
+    name: "lon"
+    type: "gps"
+    unit: "degrees"
+    required: true
+    use: true
+    save: true
+  track_id_col:
+    name: "segment_label"
+    type: "id"
+    unit: ""
+    required: true
+    use: true
+    save: true
