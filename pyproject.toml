@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mdd_processing"
+version = "0.1.5"
+description = "MDD processing pipeline"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  {name = "Liudmyla Gorbunova", email = "gorbunova.milasha@gmail.com"},
+]
+dependencies = [
+    "AHRS>=0.3",
+    "geographiclib>=2.0,<3.0",
+    "geopy>=2.4,<3.0",
+    "numpy>=2.2,<3.0",
+    "pandas>=2.2.3,<3.0",
+    "PyYAML>=6.0,<7.0",
+    "scipy>=1.15.0,<2.0",
+    "typing_extensions>=4.5",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mdd_processing*"]
+exclude = ["mdd_processing.visual*", "mdd_processing.files_for_test*"]
+
+[tool.setuptools.package-data]
+"mdd_processing" = ["**/*.yaml"]
+
+[project.optional-dependencies]
+dev =[
+  "nuitka>=2.0",
+  "wheel>=0.42",
+]

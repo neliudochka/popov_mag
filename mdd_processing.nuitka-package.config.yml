@@ -1,0 +1,8 @@
+# Nuitka package config for mdd_processing
+# Include YAML data files required at runtime
+- module-name: mdd_processing
+  data-files:
+    - dirs:
+        - preprocessing/Data/data_configs
+      patterns:
+        - '*.yaml'

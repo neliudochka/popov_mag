@@ -1,0 +1,7 @@
+# Nuitka package configuration
+- module_name: mdd_processing
+  data-files:
+    dirs:
+      - preprocessing/Data/data_configs
+    parents:
+      - config.yaml
